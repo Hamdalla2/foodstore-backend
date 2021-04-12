@@ -14,7 +14,7 @@
 	<name>foodstore</name>
 	<description>apk for food suppliers and restaurants</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>15</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
