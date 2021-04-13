@@ -89,10 +89,9 @@ public class all {
         current.setUsername(username);
         current.setPassword(password);
         Optional<Store> search=storerepo.findOne(Example.of(current));
-        if(search.isPresent()){return "token "+current.getId();}
-        else{
-            return "not found";
-        }
+        String value = search.map(x->x.getId()).orElse("");
+        if(value!=""){return "token "+value;}
+        return "not found";
     }
     @PostMapping("/signin/restaurant")
     public String signRestaurant(@RequestBody Map<String, String> body) {
@@ -102,9 +101,8 @@ public class all {
         current.setUsername(username);
         current.setPassword(password);
         Optional<Restaurant> search=restrepo.findOne(Example.of(current));
-        if(search.isPresent()){return "token "+current.getId();}
-        else{
-            return "not found";
-        }
+        String value = search.map(x->x.getId()).orElse("");
+        if(value!=""){return "token "+value;}
+        return "not found";
     }
 }
