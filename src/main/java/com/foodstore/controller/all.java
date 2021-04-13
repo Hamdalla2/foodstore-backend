@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.foodstore.model.Name;
 import com.foodstore.model.Store;
 import com.foodstore.model.Restaurant;
+import com.foodstore.repository.NameRepo;
 import com.foodstore.repository.StoreRepo;
 import com.foodstore.repository.RestaurantRepo;
 
@@ -27,9 +29,14 @@ public class all {
     private RestaurantRepo restrepo;
     @Autowired
     private StoreRepo storerepo;
+    @Autowired
+    private NameRepo namerepo;
     @PostMapping("/add/store")
     public String addStore(@RequestBody Store store) {
-        Optional<Store> current=storerepo.findOne(Example.of(store));
+        String username = store.getUsername();
+        Name name = new Name();
+        name.setName(username);
+        Optional<Name> current=namerepo.findOne(Example.of(name));
         if(current.isPresent()){return "exists";}
         else{
             storerepo.save(store);
@@ -38,7 +45,10 @@ public class all {
     }
     @PostMapping("/add/restaurant")
     public String addRestaurant(@RequestBody Restaurant restaurant) {
-        Optional<Restaurant> current=restrepo.findOne(Example.of(restaurant));
+        String username = restaurant.getUsername();
+        Name name = new Name();
+        name.setName(username);
+        Optional<Name> current=namerepo.findOne(Example.of(name));
         if(current.isPresent()){return "exists";}
         else{
             restrepo.save(restaurant);
@@ -72,23 +82,29 @@ public class all {
         return "restaurant deleted";
     }
     @PostMapping("/signin/store")
-    public Optional<Store> signStore(@RequestBody Map<String, String> body) {
+    public String signStore(@RequestBody Map<String, String> body) {
         String username = body.get("username");
         String password = body.get("password");
         Store current = new Store();
         current.setUsername(username);
         current.setPassword(password);
         Optional<Store> search=storerepo.findOne(Example.of(current));
-        return search;
+        if(search.isPresent()){return "token "+current.getId();}
+        else{
+            return "not found";
+        }
     }
     @PostMapping("/signin/restaurant")
-    public Optional<Restaurant> signRestaurant(@RequestBody Map<String, String> body) {
+    public String signRestaurant(@RequestBody Map<String, String> body) {
         String username = body.get("username");
         String password = body.get("password");
         Restaurant current = new Restaurant();
         current.setUsername(username);
         current.setPassword(password);
         Optional<Restaurant> search=restrepo.findOne(Example.of(current));
-        return search;
+        if(search.isPresent()){return "token "+current.getId();}
+        else{
+            return "not found";
+        }
     }
 }
