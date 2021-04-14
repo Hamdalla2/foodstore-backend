@@ -70,11 +70,11 @@ public class all {
     public List<Restaurant> getRestaurants() {
         return restrepo.findAll();
     }
-    @GetMapping("/get/stores/{id}")
+    @GetMapping("/get/store/{id}")
     public Optional<Store> getStore(@PathVariable String id) {
         return storerepo.findById(id);
     }
-    @GetMapping("/get/restaurants/{id}")
+    @GetMapping("/get/restaurant/{id}")
     public Optional<Restaurant> getRestaurant(@PathVariable String id) {
         return restrepo.findById(id);
     }
@@ -93,15 +93,15 @@ public class all {
         namerepo.deleteAll();
         return "names deleted";
     }
-    @DeleteMapping("/delete/restaurant")
+    @DeleteMapping("/delete/restaurants")
     public String delRestaurant() {
         restrepo.deleteAll();
-        return "restaurant deleted";
+        return "restaurants deleted";
     }
-    @DeleteMapping("/delete/store")
+    @DeleteMapping("/delete/stores")
     public String delStore() {
         storerepo.deleteAll();
-        return "store deleted";
+        return "stores deleted";
     }
     @PostMapping("/signin/store")
     public String signStore(@RequestBody Map<String, String> body) {
@@ -140,6 +140,21 @@ public class all {
         added.add(item);
         store.setItems(added);
         storerepo.save(store);
+        return "added";
+    }
+    @PostMapping("/buy/item")
+    public String buyItem(@RequestBody Map<String, String> body) {
+        String id = body.get("token");
+        Restaurant restaurant = restrepo.findById(id).orElse(new Restaurant());
+        ArrayList<String> item = new ArrayList<String>();
+        item.add(body.get("image"));
+        item.add(body.get("name"));
+        item.add(body.get("amount"));
+        item.add(body.get("price"));
+        ArrayList<ArrayList<String>> added = restaurant.getItems();
+        added.add(item);
+        restaurant.setItems(added);
+        restrepo.save(restaurant);
         return "added";
     }
 }

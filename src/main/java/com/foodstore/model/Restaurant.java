@@ -1,5 +1,7 @@
 package com.foodstore.model;
 
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,5 +21,6 @@ public class Restaurant {
     private String password;
     private String name;
     private String address;
+    private ArrayList<ArrayList<String>> items;
 
 }
