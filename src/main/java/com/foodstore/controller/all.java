@@ -88,6 +88,21 @@ public class all {
         restrepo.deleteById(id);
         return "restaurant deleted";
     }
+    @DeleteMapping("/delete/names")
+    public String delNames() {
+        restrepo.deleteAll();
+        return "names deleted";
+    }
+    @DeleteMapping("/delete/restaurant")
+    public String delRestaurant() {
+        restrepo.deleteAll();
+        return "restaurant deleted";
+    }
+    @DeleteMapping("/delete/store")
+    public String delStore() {
+        restrepo.deleteAll();
+        return "store deleted";
+    }
     @PostMapping("/signin/store")
     public String signStore(@RequestBody Map<String, String> body) {
         String username = body.get("username");
