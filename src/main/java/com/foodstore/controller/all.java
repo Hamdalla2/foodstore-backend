@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.mongodb.repository.query.StringBasedAggregation;
 
 @CrossOrigin
 @RestController
@@ -71,20 +72,20 @@ public class all {
         return restrepo.findAll();
     }
     @GetMapping("/get/stores/{id}")
-    public Optional<Store> getStore(@PathVariable int id) {
+    public Optional<Store> getStore(@PathVariable String id) {
         return storerepo.findById(id);
     }
     @GetMapping("/get/restaurants/{id}")
-    public Optional<Restaurant> getRestaurant(@PathVariable int id) {
+    public Optional<Restaurant> getRestaurant(@PathVariable String id) {
         return restrepo.findById(id);
     }
     @DeleteMapping("/delete/store/{id}")
-    public String delStore(@PathVariable int id) {
+    public String delStore(@PathVariable String id) {
         storerepo.deleteById(id);
         return "store deleted";
     }
     @DeleteMapping("/delete/restaurant/{id}")
-    public String delRestaurant(@PathVariable int id) {
+    public String delRestaurant(@PathVariable String id) {
         restrepo.deleteById(id);
         return "restaurant deleted";
     }
@@ -114,8 +115,7 @@ public class all {
     }
     @PostMapping("/add/item")
     public String addItem(@RequestBody Map<String, String> body) {
-        String token = body.get("token");
-        int id = Integer.parseInt(token);
+        String id = body.get("token");
         Store store = storerepo.findById(id).orElse(new Store());
         ArrayList<String> item = new ArrayList<String>();
         item.add(body.get("image"));
