@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.data.mongodb.repository.query.StringBasedAggregation;
 
 @CrossOrigin
 @RestController
@@ -122,7 +121,9 @@ public class all {
         item.add(body.get("name"));
         item.add(body.get("amount"));
         item.add(body.get("price"));
-        store.getItems().add(item);
+        ArrayList<ArrayList<String>> added = store.getItems();
+        added.add(item);
+        store.setItems(added);
         storerepo.save(store);
         return "added";
     }
