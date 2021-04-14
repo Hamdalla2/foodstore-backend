@@ -24,5 +24,6 @@ public class Store {
     private String address;
     private String image;
     private ArrayList<ArrayList<String>> items;
+    private ArrayList<ArrayList<String>> orders;
 
 }

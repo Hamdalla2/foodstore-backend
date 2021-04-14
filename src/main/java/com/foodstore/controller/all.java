@@ -31,7 +31,7 @@ public class all {
     @Autowired
     private StoreRepo storerepo;
     @Autowired
-    private NameRepo namerepo;
+    private NameRepo namerepo;    
     @PostMapping("/add/store")
     public String addStore(@RequestBody Store store) {
         String username = store.getUsername();
@@ -144,8 +144,10 @@ public class all {
     }
     @PostMapping("/buy/item")
     public String buyItem(@RequestBody Map<String, String> body) {
-        String id = body.get("token");
-        Restaurant restaurant = restrepo.findById(id).orElse(new Restaurant());
+        String token = body.get("token");
+        String id = body.get("store");
+        Restaurant restaurant = restrepo.findById(token).orElse(new Restaurant());
+        Store store = storerepo.findById(id).orElse(new Store());
         ArrayList<String> item = new ArrayList<String>();
         item.add(body.get("image"));
         item.add(body.get("name"));
@@ -155,6 +157,14 @@ public class all {
         added.add(item);
         restaurant.setItems(added);
         restrepo.save(restaurant);
+        ArrayList<String> order = new ArrayList<String>();
+        order.add(restaurant.getName());
+        order.add(body.get("name"));
+        order.add(body.get("amount"));
+        ArrayList<ArrayList<String>> ordered = store.getItems();
+        ordered.add(order);
+        store.setItems(added);
+        storerepo.save(store);
         return "added";
     }
 }
