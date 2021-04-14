@@ -90,7 +90,7 @@ public class all {
     }
     @DeleteMapping("/delete/names")
     public String delNames() {
-        restrepo.deleteAll();
+        namerepo.deleteAll();
         return "names deleted";
     }
     @DeleteMapping("/delete/restaurant")
@@ -100,7 +100,7 @@ public class all {
     }
     @DeleteMapping("/delete/store")
     public String delStore() {
-        restrepo.deleteAll();
+        storerepo.deleteAll();
         return "store deleted";
     }
     @PostMapping("/signin/store")
