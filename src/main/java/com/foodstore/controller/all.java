@@ -1,5 +1,6 @@
 package com.foodstore.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -39,6 +40,7 @@ public class all {
         Optional<Name> current=namerepo.findOne(Example.of(name));
         if(current.isPresent()){return "exists";}
         else{
+            namerepo.save(name);
             storerepo.save(store);
             return "added store";
         }
@@ -51,9 +53,14 @@ public class all {
         Optional<Name> current=namerepo.findOne(Example.of(name));
         if(current.isPresent()){return "exists";}
         else{
+            namerepo.save(name);
             restrepo.save(restaurant);
             return "added restaurant";
         }
+    }
+    @GetMapping("/get/names")
+    public List<Name> getNames() {
+        return namerepo.findAll();
     }
     @GetMapping("/get/stores")
     public List<Store> getStores() {
@@ -104,5 +111,19 @@ public class all {
         String value = search.map(x->x.getId()).orElse("");
         if(value!=""){return "token "+value;}
         return "not found";
+    }
+    @PostMapping("/add/item")
+    public String addItem(@RequestBody Map<String, String> body) {
+        String token = body.get("token");
+        int id = Integer.parseInt(token);
+        Store store = storerepo.findById(id).orElse(new Store());
+        ArrayList<String> item = new ArrayList<String>();
+        item.add(body.get("image"));
+        item.add(body.get("name"));
+        item.add(body.get("amount"));
+        item.add(body.get("price"));
+        store.getItems().add(item);
+        storerepo.save(store);
+        return "added";
     }
 }
