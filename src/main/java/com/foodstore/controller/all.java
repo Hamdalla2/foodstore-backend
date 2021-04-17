@@ -1,6 +1,7 @@
 package com.foodstore.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -157,14 +158,49 @@ public class all {
         added.add(item);
         restaurant.setItems(added);
         restrepo.save(restaurant);
-        ArrayList<String> order = new ArrayList<String>();
-        order.add(restaurant.getName());
-        order.add(body.get("name"));
-        order.add(body.get("amount"));
-        ArrayList<ArrayList<String>> ordered = store.getItems();
-        ordered.add(order);
-        store.setItems(added);
+        String order = restaurant.getName()+"@!?!@"+body.get("name")+"@!?!@"+body.get("amount");
+        HashMap <String, ArrayList<String>> orders = store.getOrders();
+        ArrayList<String> pending = orders.get("pending");
+        pending.add(order);
+        orders.put("pending",pending);
+        store.setOrders(orders);
         storerepo.save(store);
         return "added";
+    }
+    @PostMapping("/order/allow")
+    public String allowOrder(@RequestBody Map<String, String> body) {
+        String id = body.get("id");
+        String index = body.get("index");
+        int i = Integer.parseInt(index);
+        Store store = storerepo.findById(id).orElse(new Store());
+        HashMap <String, ArrayList<String>> orders = store.getOrders();
+        ArrayList<String> pending = orders.get("pending");
+        ArrayList<String> accepted = orders.get("accepted");
+        String order = pending.get(i);
+        pending.remove(i);
+        accepted.add(order);
+        orders.put("pending",pending);
+        orders.put("accepted",accepted);
+        store.setOrders(orders);
+        storerepo.save(store);
+        return "ok";
+    }
+    @PostMapping("/order/reject")
+    public String rejectOrder(@RequestBody Map<String, String> body) {
+        String id = body.get("id");
+        String index = body.get("index");
+        int i = Integer.parseInt(index);
+        Store store = storerepo.findById(id).orElse(new Store());
+        HashMap <String, ArrayList<String>> orders = store.getOrders();
+        ArrayList<String> pending = orders.get("pending");
+        ArrayList<String> rejected = orders.get("rejected");
+        String order = pending.get(i);
+        pending.remove(i);
+        rejected.add(order);
+        orders.put("pending",pending);
+        orders.put("rejected",rejected);
+        store.setOrders(orders);
+        storerepo.save(store);
+        return "ok";
     }
 }

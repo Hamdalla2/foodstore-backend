@@ -1,6 +1,8 @@
 package com.foodstore.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,6 +26,6 @@ public class Store {
     private String address;
     private String image;
     private ArrayList<ArrayList<String>> items;
-    private ArrayList<ArrayList<String>> orders;
+    private HashMap<String, ArrayList<String>> orders;
 
 }
