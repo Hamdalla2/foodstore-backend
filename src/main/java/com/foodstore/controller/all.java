@@ -175,12 +175,12 @@ public class all {
         Store store = storerepo.findById(id).orElse(new Store());
         HashMap <String, ArrayList<String>> orders = store.getOrders();
         ArrayList<String> pending = orders.get("pending");
-        ArrayList<String> accepted = orders.get("accepted");
+        ArrayList<String> allowed = orders.get("allowed");
         String order = pending.get(i);
         pending.remove(i);
-        accepted.add(order);
+        allowed.add(order);
         orders.put("pending",pending);
-        orders.put("accepted",accepted);
+        orders.put("allowed",allowed);
         store.setOrders(orders);
         storerepo.save(store);
         return "ok";
