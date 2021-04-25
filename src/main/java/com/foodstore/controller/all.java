@@ -154,6 +154,7 @@ public class all {
         item.add(body.get("name"));
         item.add(body.get("amount"));
         item.add(body.get("price"));
+        item.add(body.get("type"));
         ArrayList<ArrayList<String>> added = restaurant.getItems();
         added.add(item);
         restaurant.setItems(added);
